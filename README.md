@@ -5,7 +5,7 @@
 **A calm, premium take on the classic memory game.**
 Flip, remember, match — and beat the clock across three levels.
 
-[**▶ Play the live demo**](https://card-memory-game-tpainns-projects.vercel.app)
+[**▶ Play the live demo**](https://card-memory-game-two-eta.vercel.app)
 
 ![React](https://img.shields.io/badge/React_19-0a0810?style=flat-square&logo=react&logoColor=a78bfa)
 ![Vite](https://img.shields.io/badge/Vite-0a0810?style=flat-square&logo=vite&logoColor=f5c563)
