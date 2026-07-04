@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Surfaces — deep aubergine-black, not flat grey */
+  --bg:        #0a0810;
+  --bg-2:      #120e1d;
+  --surface:   rgba(255, 255, 255, 0.038);
+  --surface-2: rgba(255, 255, 255, 0.06);
+  --line:      rgba(255, 255, 255, 0.09);
+
+  /* Ink */
+  --ink:    #f4f1fb;
+  --ink-2:  rgba(244, 241, 251, 0.62);
+  --ink-3:  rgba(244, 241, 251, 0.34);
+
+  /* Accents — violet primary, gold reward, emerald success, rose fail */
+  --violet:  #a78bfa;
+  --violet-2:#8b5cf6;
+  --gold:    #f5c563;
+  --emerald: #34d399;
+  --rose:    #fb7185;
+
+  --violet-rgb: 167, 139, 250;
+  --gold-rgb:   245, 197, 99;
+
+  --display: 'Fraunces', Georgia, serif;
+  --sans:    'Space Grotesk', system-ui, sans-serif;
+
+  --ease:   cubic-bezier(0.22, 1, 0.36, 1);
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --r:    16px;
+  --r-lg: 24px;
+
+  color-scheme: dark;
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  min-height: 100svh;
+  color: var(--ink);
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(var(--violet-rgb), 0.14) 0%, transparent 55%),
+    radial-gradient(100% 60% at 90% 110%, rgba(var(--gold-rgb), 0.06) 0%, transparent 50%),
+    var(--bg);
+  background-attachment: fixed;
+  display: grid;
+  place-items: center;
+  overflow-x: hidden;
+}
+
+/* Grain overlay — kills the flat digital look */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.02;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+#root { width: 100%; display: grid; place-items: center; padding: 24px; }
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+::selection { background: rgba(var(--violet-rgb), 0.3); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
