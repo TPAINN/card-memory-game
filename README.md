@@ -11,6 +11,8 @@ Flip, remember, match — and beat the clock across three levels.
 ![Vite](https://img.shields.io/badge/Vite-0a0810?style=flat-square&logo=vite&logoColor=f5c563)
 ![License](https://img.shields.io/badge/license-MIT-0a0810?style=flat-square&labelColor=0a0810&color=8b5cf6)
 
+![Card Memory screenshot](docs/screenshot.png)
+
 </div>
 
 ---
