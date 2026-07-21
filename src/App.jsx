@@ -5,6 +5,9 @@ import Controls from './components/Controls'
 import Stats from './components/Stats'
 import { ICON_IDS } from './components/icons'
 
+// Small tactile buzz on supported devices — makes matches feel physical.
+const buzz = ms => { try { navigator.vibrate?.(ms) } catch { /* unsupported */ } }
+
 const TIME_LIMITS = { easy: 30, medium: 50, hard: 80 };
 const PAIRS = { easy: 4, medium: 8, hard: 12 };
 
@@ -79,6 +82,7 @@ function App() {
 
     const flipped = cards.map((c) => (c.id === cardId ? { ...c, isFlipped: true } : c));
     setCards(flipped);
+    buzz(8); // soft tick on every flip
 
     if (selectedCards.length === 0) {
       setSelectedCards([clicked]);
@@ -95,9 +99,11 @@ function App() {
       ));
       setSelectedCards([]);
       streak.current += 1;
+      buzz([12, 30, 22]); // satisfying double-tap on a match
       if (streak.current >= 2) { setCombo(streak.current); setComboKey((k) => k + 1); }
     } else {
       streak.current = 0;
+      buzz(30); // one longer buzz on a miss
       setLockBoard(true);
       setTimeout(() => {
         setCards((prev) => prev.map((c) =>
@@ -129,62 +135,64 @@ function App() {
     <div className="game-container">
       {combo > 0 && <div className="combo" key={comboKey}><strong>{combo}×</strong> streak</div>}
 
-      {screen === 'welcome' && (
-        <div className="panel">
-          <p className="eyebrow">A focus game</p>
-          <h1 className="title">Card<br />Memory</h1>
-          <p className="lede">Flip, remember, match. Beat the clock across three levels — every pair you find buys back a little calm.</p>
-          <button className="btn btn--primary" onClick={() => setScreen('difficulty')}>Start Playing</button>
-        </div>
-      )}
-
-      {screen === 'difficulty' && (
-        <Controls onStartGame={startGame} onBack={() => setScreen('welcome')} />
-      )}
-
-      {screen === 'game' && (
-        <>
-          <div className="hud">
-            <div className="hud__stat">
-              <span className="hud__label">Moves</span>
-              <span className="hud__value">{moves}</span>
+      <div className="screen" key={screen}>
+          {screen === 'welcome' && (
+            <div className="panel">
+              <p className="eyebrow">A focus game</p>
+              <h1 className="title">Card<br />Memory</h1>
+              <p className="lede">Flip, remember, match. Beat the clock across three levels — every pair you find buys back a little calm.</p>
+              <button className="btn btn--primary" onClick={() => setScreen('difficulty')}>Start Playing</button>
             </div>
+          )}
 
-            <div className={`ring${low ? ' is-low' : ''}`}>
-              <svg width="66" height="66" viewBox="0 0 66 66">
-                <circle className="ring__track" cx="33" cy="33" r={R} fill="none" strokeWidth="4" />
-                <circle
-                  className="ring__fill" cx="33" cy="33" r={R} fill="none" strokeWidth="4"
-                  strokeDasharray={C} strokeDashoffset={C * (1 - frac)}
-                />
-              </svg>
-              <span className="ring__num">{timer}</span>
-            </div>
+          {screen === 'difficulty' && (
+            <Controls onStartGame={startGame} onBack={() => setScreen('welcome')} />
+          )}
 
-            <div className="hud__stat" style={{ textAlign: 'right' }}>
-              <span className="hud__label">Level</span>
-              <span className="hud__value" style={{ textTransform: 'capitalize', fontSize: '1rem' }}>{difficulty}</span>
-            </div>
-          </div>
+          {screen === 'game' && (
+            <>
+              <div className="hud">
+                <div className="hud__stat">
+                  <span className="hud__label">Moves</span>
+                  <span className="hud__value">{moves}</span>
+                </div>
 
-          <Board cards={cards} onCardClick={handleCardClick} />
+                <div className={`ring${low ? ' is-low' : ''}`}>
+                  <svg width="66" height="66" viewBox="0 0 66 66">
+                    <circle className="ring__track" cx="33" cy="33" r={R} fill="none" strokeWidth="4" />
+                    <circle
+                      className="ring__fill" cx="33" cy="33" r={R} fill="none" strokeWidth="4"
+                      strokeDasharray={C} strokeDashoffset={C * (1 - frac)}
+                    />
+                  </svg>
+                  <span className="ring__num">{timer}</span>
+                </div>
 
-          <button className="btn btn--quiet" style={{ marginTop: 22 }} onClick={() => setScreen('welcome')}>
-            Quit game
-          </button>
-        </>
-      )}
+                <div className="hud__stat" style={{ textAlign: 'right' }}>
+                  <span className="hud__label">Level</span>
+                  <span className="hud__value" style={{ textTransform: 'capitalize', fontSize: '1rem' }}>{difficulty}</span>
+                </div>
+              </div>
 
-      {screen === 'score' && (
-        <Stats
-          timer={timer}
-          moves={moves}
-          stats={stats}
-          gameStatus={gameStatus}
-          onPlayAgain={() => setScreen('difficulty')}
-          onHome={() => setScreen('welcome')}
-        />
-      )}
+              <Board cards={cards} onCardClick={handleCardClick} />
+
+              <button className="btn btn--quiet" style={{ marginTop: 22 }} onClick={() => setScreen('welcome')}>
+                Quit game
+              </button>
+            </>
+          )}
+
+          {screen === 'score' && (
+            <Stats
+              timer={timer}
+              moves={moves}
+              stats={stats}
+              gameStatus={gameStatus}
+              onPlayAgain={() => setScreen('difficulty')}
+              onHome={() => setScreen('welcome')}
+            />
+          )}
+      </div>
     </div>
   );
 }
