@@ -3,14 +3,14 @@ import './App.css'
 import Board from './components/Board'
 import Controls from './components/Controls'
 import Stats from './components/Stats'
+import { ICON_IDS } from './components/icons'
 
-const EMOJI_POOL = ['🌙', '⚡', '🔮', '🌸', '🍥', '🗝️', '🎇', '🪐', '🍄', '🦋', '🧿', '🌊'];
 const TIME_LIMITS = { easy: 30, medium: 50, hard: 80 };
 const PAIRS = { easy: 4, medium: 8, hard: 12 };
 
 const generateCards = (difficulty) => {
   const pairCount = PAIRS[difficulty] || 4;
-  const chosen = EMOJI_POOL.slice(0, pairCount);
+  const chosen = ICON_IDS.slice(0, pairCount);
   return [...chosen, ...chosen]
     .map((value, id) => ({ id, value, isFlipped: false, isMatched: false }))
     .sort(() => Math.random() - 0.5);
@@ -127,7 +127,7 @@ function App() {
 
   return (
     <div className="game-container">
-      {combo > 0 && <div className="combo" key={comboKey}>🔥 {combo}× streak</div>}
+      {combo > 0 && <div className="combo" key={comboKey}><strong>{combo}×</strong> streak</div>}
 
       {screen === 'welcome' && (
         <div className="panel">

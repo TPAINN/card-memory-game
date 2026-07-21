@@ -1,27 +1,28 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 :root {
-  /* Surfaces — deep aubergine-black, not flat grey */
-  --bg:        #0a0810;
-  --bg-2:      #120e1d;
-  --surface:   rgba(255, 255, 255, 0.038);
-  --surface-2: rgba(255, 255, 255, 0.06);
-  --line:      rgba(255, 255, 255, 0.09);
+  /* Surfaces — warm paper white, clean and calm */
+  --bg:        #f4f3f0;
+  --bg-2:      #efeeea;
+  --surface:   #ffffff;
+  --surface-2: #f7f6f3;
+  --line:      rgba(24, 24, 30, 0.10);
+  --line-2:    rgba(24, 24, 30, 0.06);
 
   /* Ink */
-  --ink:    #f4f1fb;
-  --ink-2:  rgba(244, 241, 251, 0.62);
-  --ink-3:  rgba(244, 241, 251, 0.34);
+  --ink:    #1a1a1e;
+  --ink-2:  #56565f;
+  --ink-3:  #9a9aa4;
 
-  /* Accents — violet primary, gold reward, emerald success, rose fail */
-  --violet:  #a78bfa;
-  --violet-2:#8b5cf6;
-  --gold:    #f5c563;
-  --emerald: #34d399;
-  --rose:    #fb7185;
+  /* One accent + semantic state colours only */
+  --accent:    #5750e0;
+  --accent-2:  #4740c9;
+  --accent-soft: rgba(87, 80, 224, 0.10);
+  --accent-rgb: 87, 80, 224;
 
-  --violet-rgb: 167, 139, 250;
-  --gold-rgb:   245, 197, 99;
+  --emerald: #0e9f6e;
+  --amber:   #cf8a12;
+  --rose:    #e0483d;
 
   --display: 'Fraunces', Georgia, serif;
   --sans:    'Space Grotesk', system-ui, sans-serif;
@@ -32,7 +33,12 @@
   --r:    16px;
   --r-lg: 24px;
 
-  color-scheme: dark;
+  /* Soft, neutral layered shadows — the premium light look */
+  --shadow-sm: 0 1px 2px rgba(24, 24, 30, 0.05), 0 1px 1px rgba(24, 24, 30, 0.03);
+  --shadow-md: 0 2px 6px rgba(24, 24, 30, 0.05), 0 10px 24px -8px rgba(24, 24, 30, 0.12);
+  --shadow-lg: 0 4px 12px rgba(24, 24, 30, 0.06), 0 24px 60px -20px rgba(24, 24, 30, 0.18);
+
+  color-scheme: light;
   font-family: var(--sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -44,8 +50,7 @@ body {
   min-height: 100svh;
   color: var(--ink);
   background:
-    radial-gradient(120% 80% at 50% -10%, rgba(var(--violet-rgb), 0.14) 0%, transparent 55%),
-    radial-gradient(100% 60% at 90% 110%, rgba(var(--gold-rgb), 0.06) 0%, transparent 50%),
+    radial-gradient(120% 80% at 50% -20%, rgba(var(--accent-rgb), 0.05) 0%, transparent 55%),
     var(--bg);
   background-attachment: fixed;
   display: grid;
@@ -53,23 +58,11 @@ body {
   overflow-x: hidden;
 }
 
-/* Grain overlay — kills the flat digital look */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0.02;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
 #root { width: 100%; display: grid; place-items: center; padding: 24px; }
 
 button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
 
-::selection { background: rgba(var(--violet-rgb), 0.3); }
+::selection { background: rgba(var(--accent-rgb), 0.18); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
