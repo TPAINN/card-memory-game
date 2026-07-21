@@ -7,9 +7,24 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: screenIn 0.5s var(--ease);
 }
-@keyframes screenIn { from { opacity: 0; transform: translateY(12px); } }
+/* Page transition: the wrapper is keyed by `screen` in App.jsx, so React
+   remounts it on every screen change and this enter animation replays — a
+   soft fade + rise + settle with an ease-out-expo curve. GPU-only (transform
+   + opacity), reduced-motion honoured by the global rule in index.css. */
+.screen {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: screenIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: transform, opacity;
+}
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.985); }
+  60%  { opacity: 1; }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
 
 /* ── Shared panel ── */
 .panel {
@@ -211,13 +226,17 @@
 }
 .card__glyph { width: 46%; height: 46%; color: var(--ink); }
 
-.card.is-matched { cursor: default; animation: matchPop 0.5s var(--spring); }
+.card.is-matched { cursor: default; animation: matchPop 0.55s var(--spring); }
 .card.is-matched .card__front {
-  border-color: rgba(var(--accent-rgb), 0.45);
+  border-color: rgba(var(--accent-rgb), 0.5);
   background: var(--accent-soft);
+  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.18), 0 10px 26px -8px rgba(var(--accent-rgb), 0.4);
 }
 .card.is-matched .card__glyph { color: var(--accent); }
-@keyframes matchPop { 40% { transform: rotateY(180deg) scale(1.08); } }
+@keyframes matchPop {
+  35% { transform: rotateY(180deg) scale(1.1); }
+  60% { transform: rotateY(180deg) scale(0.97); }
+}
 
 /* ── Score screen ── */
 .result-badge {
