@@ -1,10 +1,12 @@
+import { ResultIcon } from './icons';
+
 const Stats = ({ timer, moves, stats, gameStatus, onPlayAgain, onHome }) => {
   const isWin = gameStatus === 'win';
 
   return (
     <div className="panel">
       <div className={`result-badge result-badge--${isWin ? 'win' : 'lose'}`}>
-        {isWin ? '🏆' : '⏳'}
+        <ResultIcon win={isWin} />
       </div>
       <h2 className={`result-title result-title--${isWin ? 'win' : 'lose'}`}>
         {isWin ? 'You Won' : 'Time’s Up'}
