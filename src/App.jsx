@@ -3,7 +3,7 @@ import './App.css'
 import Board from './components/Board'
 import Controls from './components/Controls'
 import Stats from './components/Stats'
-import { ICON_IDS } from './components/icons'
+import { ICON_IDS } from './components/icon-ids'
 
 // Small tactile buzz on supported devices — makes matches feel physical.
 const buzz = ms => { try { navigator.vibrate?.(ms) } catch { /* unsupported */ } }
@@ -31,6 +31,7 @@ function App() {
   const [combo, setCombo] = useState(0);
   const [comboKey, setComboKey] = useState(0);
   const streak = useRef(0);
+  const timeLeft = useRef(0);
 
   const [stats, setStats] = useState(() => {
     const saved = localStorage.getItem('card_memory_game_stats');
@@ -43,37 +44,21 @@ function App() {
     localStorage.setItem('card_memory_game_stats', JSON.stringify(stats));
   }, [stats]);
 
-  // Countdown
+  // Countdown — also ends the run when it hits zero
   useEffect(() => {
     if (screen !== 'game') return;
-    const id = setInterval(() => setTimer((t) => t - 1), 1000);
+    const id = setInterval(() => {
+      timeLeft.current -= 1;
+      setTimer(timeLeft.current);
+      if (timeLeft.current <= 0) {
+        clearInterval(id);
+        setScreen('score');
+        setGameStatus('lose');
+        setStats((p) => ({ ...p, losses: p.losses + 1 }));
+      }
+    }, 1000);
     return () => clearInterval(id);
   }, [screen]);
-
-  // Lose on timeout
-  useEffect(() => {
-    if (screen === 'game' && timer === 0) {
-      setScreen('score');
-      setGameStatus('lose');
-      setStats((p) => ({ ...p, losses: p.losses + 1 }));
-    }
-  }, [timer, screen]);
-
-  // Win when all matched
-  useEffect(() => {
-    if (cards.length === 0 || !cards.every((c) => c.isMatched)) return;
-    setScreen('score');
-    setGameStatus('win');
-    setStats((prev) => {
-      const best = prev.bestTimes[difficulty];
-      const record = best == null || timer > best;
-      return {
-        ...prev,
-        wins: prev.wins + 1,
-        bestTimes: { ...prev.bestTimes, [difficulty]: record ? timer : best },
-      };
-    });
-  }, [cards, difficulty, timer]);
 
   const handleCardClick = (cardId) => {
     if (lockBoard) return;
@@ -94,13 +79,29 @@ function App() {
     const first = selectedCards[0];
 
     if (first.value === clicked.value) {
-      setCards(flipped.map((c) =>
+      const matched = flipped.map((c) =>
         c.id === first.id || c.id === cardId ? { ...c, isMatched: true } : c
-      ));
+      );
+      setCards(matched);
       setSelectedCards([]);
       streak.current += 1;
       buzz([12, 30, 22]); // satisfying double-tap on a match
       if (streak.current >= 2) { setCombo(streak.current); setComboKey((k) => k + 1); }
+
+      if (matched.every((c) => c.isMatched)) {
+        const remaining = timeLeft.current;
+        setScreen('score');
+        setGameStatus('win');
+        setStats((prev) => {
+          const best = prev.bestTimes[difficulty];
+          const record = best == null || remaining > best;
+          return {
+            ...prev,
+            wins: prev.wins + 1,
+            bestTimes: { ...prev.bestTimes, [difficulty]: record ? remaining : best },
+          };
+        });
+      }
     } else {
       streak.current = 0;
       buzz(30); // one longer buzz on a miss
@@ -116,6 +117,7 @@ function App() {
   };
 
   const startGame = (level) => {
+    timeLeft.current = TIME_LIMITS[level];
     setTimer(TIME_LIMITS[level]);
     setGameStatus(null);
     setCards(generateCards(level));
