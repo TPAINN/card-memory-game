@@ -64,6 +64,4 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 ::selection { background: rgba(var(--accent-rgb), 0.18); }
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-}
+
