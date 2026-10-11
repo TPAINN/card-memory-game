@@ -1,15 +1,17 @@
 <div align="center">
 
-# ✦ Card Memory
+<img src="docs/banner.svg" alt="Card Memory — a calm, premium memory game with three levels and real 3D flips" width="100%">
 
-**A calm, premium take on the classic memory game.**
-Flip, remember, match — and beat the clock across three levels.
+<br>
 
-[**▶ Play the live demo**](https://card-memory-game-two-eta.vercel.app)
+[![Play](https://img.shields.io/badge/%E2%96%B6_play_the_live_demo-card--memory--game--two--eta.vercel.app-f5c563?style=for-the-badge&labelColor=0e0a18)](https://card-memory-game-two-eta.vercel.app)
 
-![React](https://img.shields.io/badge/React_19-0a0810?style=flat-square&logo=react&logoColor=a78bfa)
-![Vite](https://img.shields.io/badge/Vite-0a0810?style=flat-square&logo=vite&logoColor=f5c563)
-![License](https://img.shields.io/badge/license-MIT-0a0810?style=flat-square&labelColor=0a0810&color=8b5cf6)
+![React 19](https://img.shields.io/badge/React_19-0e0a18?style=flat-square&logo=react&logoColor=a78bfa)
+![Vite](https://img.shields.io/badge/Vite-0e0a18?style=flat-square&logo=vite&logoColor=f5c563)
+![PWA](https://img.shields.io/badge/PWA-installable-0e0a18?style=flat-square&labelColor=0e0a18&color=a78bfa)
+![License](https://img.shields.io/badge/license-MIT-0e0a18?style=flat-square&labelColor=0e0a18&color=f5c563)
+
+**A calm, premium take on the classic memory game. Flip, remember, match, and beat the clock across three levels.**
 
 ![Card Memory screenshot](docs/screenshot.png)
 
